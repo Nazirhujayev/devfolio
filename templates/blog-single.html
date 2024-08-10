@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+{%load static%}
+{%block content%}
+<!--/ Intro Skew Star /-->
+<div class="intro intro-single route bg-image" style="background-image: url(img/overlay-bg.jpg)">
+  <div class="overlay-mf"></div>
+  <div class="intro-content display-table">
+    <div class="table-cell">
+      <div class="container">
+        <h2 class="intro-title mb-4">Blog Details</h2>
+        <ol class="breadcrumb d-flex justify-content-center">
+          <li class="breadcrumb-item">
+            <a href="{%url 'common:home' %}">Home</a>
+          </li>
+          
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+<!--/ Intro Skew End /-->
+
+<!--/ Section Blog-Single Star /-->
+<section class="blog-wrapper sect-pt4" id="blog">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8">
+        <div class="post-box">
+          <div class="post-thumb">
+            <img src="{{object.image_main.url}}" class="img-fluid" alt="">
+          </div>
+          <div class="post-meta">
+            <h1 class="article-title">{{ object.title }}</h1>
+            <ul>
+              <li>
+                <span class="ion-ios-person"></span>
+                <a href="#">{{object.name}}</a>
+              </li>
+              <li>
+                <span class="ion-pricetag"></span>
+                {%for i in object.category.all%}
+                <a href="#">{{i.category}}</a>
+                {%endfor%}
+              </li>
+              <li>
+                <span class="ion-chatbox"></span>
+                <a href="#">14 </a>
+              </li>
+            </ul>
+          </div>
+          <div class="article-content">
+            <p>
+              {{object.content | safe}}
+            </p>
+          </div>
+        </div>
+        <div class="box-comments">
+          <div class="title-box-2">
+            <h4 class="title-comments title-left">Comments ({{object.count}}) </h4>
+           
+            
+          </div>
+          {%for i in comments%}
+
+          <ul class="list-comments">
+            <li>
+              {% comment %} <div class="comment-avatar">
+                <img src="img/testimonial-2.jpg" alt="">
+              </div> {% endcomment %}
+              <div class="comment-details">
+                <h4 class="comment-author">{{i.name}}</h4>
+                <span>{{i.date}}</span>
+                <p>
+                  {{i.message}}
+                </p>
+                {% comment %} <a href="3">Reply</a> {% endcomment %}
+              </div>
+            </li>
+          </ul>
+          
+          {%endfor%}
+        </div>
+        <div class="form-comments">
+          <div class="title-box-2">
+            <h3 class="title-left">
+              Leave a Reply
+            </h3>
+          </div>
+          <form class="form-mf" method="post" action= "{%url "common:blog-comment" object.id %}">
+            {% csrf_token %}
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <div class="form-group">
+                  <input type="text" class="form-control input-mf" name="name" id="inputName" placeholder="Name *" required>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <div class="form-group">
+                  <input type="email" class="form-control input-mf" name="email" id="inputEmail1" placeholder="Email *" required>
+                </div>
+              </div>
+              <div class="col-md-12 mb-3">
+                <div class="form-group">
+                  <input type="subject" class="form-control input-mf" name="website" id="inputUrl" placeholder="Website">
+                </div>
+              </div>
+              <div class="col-md-12 mb-3">
+                <div class="form-group">
+                  <textarea id="textMessage" class="form-control input-mf" placeholder="Comment *" name="message"
+                    cols="45" rows="8" required></textarea>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <button type="submit" class="button button-a button-big button-rouded">Send Message</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="widget-sidebar sidebar-search">
+          <h5 class="sidebar-title">Search</h5>
+          <div class="sidebar-content">
+            <form>
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search for..." aria-label="Search for...">
+                <span class="input-group-btn">
+                  <button class="btn btn-secondary btn-search" type="button">
+                    <span class="ion-android-search"></span>
+                  </button>
+                </span>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="widget-sidebar">
+          {%if recent_posts%}
+          <h5 class="sidebar-title">Recent Post</h5>
+          {%for i in recent_posts%}
+          <div class="sidebar-content">
+            <ul class="list-sidebar">
+              <li>
+                <a href="{% url 'common:blog-single' i.slug %}">{{i.title}}</a>
+              </li>
+            </ul>
+          </div>
+          {%endfor%}
+          {%endif%}
+       
+        <div class="widget-sidebar widget-tags">
+          <h5 class="sidebar-title" >categories</h5>
+          {%for i in category%}
+          <div class="sidebar-content">
+            <ul>
+              <li>
+                <a href="#">{{i.category}}</a>
+              </li>
+            </ul>
+          </div>
+          {%endfor%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--/ Section Blog-Single End /-->
+
+
+{%endblock%}
